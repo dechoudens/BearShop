@@ -28,16 +28,16 @@ public class ListeBears {
     }
 
 
-    public ListeBears(Context context, TreeSet<Bear> series){
-        this.bears = series;
-        dataAll = new ArrayList<HashMap<String, Object>>(series.size());
-        for (Bear b : series){
+    public ListeBears(Context context, TreeSet<Bear> bears){
+        this.bears = bears;
+        dataAll = new ArrayList<HashMap<String, Object>>(bears.size());
+        for (Bear b : bears){
             HashMap<String, Object> map = new HashMap<>();
             map.put(FROM[0], b.getId());
             map.put(REF_BEAR, b);
             dataAll.add(map);
         }
-        dataFiltre = new ArrayList<HashMap<String, Object>>(series.size());
+        dataFiltre = new ArrayList<HashMap<String, Object>>(bears.size());
         adapter = new SimpleAdapter(context, dataFiltre, R.layout.un_bear, FROM, TO);
     }
 

@@ -8,12 +8,16 @@ public class Bear {
     private String nom;
     private int taille;
     private double prix;
+    private int refPetiteImage;
+    private int refGrandImage;
 
-    public Bear(int id, String nom, int taille, double prix) {
+    public Bear(int id, String nom, int taille, double prix, int refPetiteImage, int refGrandImage) {
         this.id = id;
         this.nom = nom;
         this.taille = taille;
         this.prix = prix;
+        this.refGrandImage = refGrandImage;
+        this.refPetiteImage = refPetiteImage;
     }
 
     public int getId() {
@@ -30,5 +34,13 @@ public class Bear {
 
     public double getPrix() {
         return prix;
+    }
+
+    public int getRefPetiteImage() {
+        return refPetiteImage;
+    }
+
+    public int getRefGrandImage() {
+        return refGrandImage;
     }
 }

@@ -5,8 +5,10 @@ import android.content.res.Resources;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.TreeSet;
 
 import antoine.dechoudens.hesge.ch.bearshop.R;
+import antoine.dechoudens.hesge.ch.bearshop.domaine.Bear;
 
 
 /**
@@ -47,6 +49,21 @@ public class Data {
         return b.toString();
     } // lireStr
 
-
+    public TreeSet<Bear> getBears(Resources res){
+        TreeSet<Bear> bears = new TreeSet<>();
+        String[] lstBear = lireStr(res.openRawResource(R.raw.bears)).split("\r\n");
+        for (int i = 0; i < lstBear.length; i++){
+            String[] val = lstBear[i].split(";");
+            String id = val[0];
+            String nom = val[1];
+            String taille = val[2];
+            String prix = val[3];
+            int imgPetite = refImage(res, nom + 0);
+            int imgGrande = refImage(res, nom + 1);
+            Bear serie = new Bear(Integer.parseInt(id), nom, Integer.parseInt(taille), Double.parseDouble(prix), imgPetite, imgGrande);
+            bears.add(serie);
+        }
+        return bears;
+    }
 
 } // Data
