@@ -37,7 +37,17 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         initComponent();
         initialise();
+        initListener();
     } // onCreate
+
+    private void initListener() {
+        rgFiltrePrix.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                
+            }
+        });
+    }
 
     private void initComponent() {
         rgFiltrePrix = (RadioGroup) findViewById(R.id.rgFiltrePrix);

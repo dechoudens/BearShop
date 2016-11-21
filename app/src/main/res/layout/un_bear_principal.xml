@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
+            android:textColor="#000000"
             android:id="@+id/tvNomPrincipal" />
 
         <RelativeLayout
@@ -36,6 +37,7 @@
                 android:id="@+id/tvTaillePrincipal"
                 android:layout_marginLeft="0dp"
                 android:layout_alignParentBottom="true"
+                android:textColor="#000000"
                 android:layout_alignParentStart="true" />
 
             <TextView
@@ -46,6 +48,7 @@
                 android:id="@+id/tvPrixPrincipal"
                 android:layout_marginLeft="133dp"
                 android:layout_alignTop="@+id/tvTaillePrincipal"
+                android:textColor="#000000"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
