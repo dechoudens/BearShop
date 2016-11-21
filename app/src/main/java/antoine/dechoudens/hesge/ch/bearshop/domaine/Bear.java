@@ -3,7 +3,7 @@ package antoine.dechoudens.hesge.ch.bearshop.domaine;
 /**
  * Created by antoine.dechoude on 16.11.2016.
  */
-public class Bear {
+public class Bear implements Comparable<Bear>{
     private int id;
     private String nom;
     private int taille;
@@ -18,10 +18,6 @@ public class Bear {
         this.prix = prix;
         this.refGrandImage = refGrandImage;
         this.refPetiteImage = refPetiteImage;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getNom() {
@@ -42,5 +38,10 @@ public class Bear {
 
     public int getRefGrandImage() {
         return refGrandImage;
+    }
+
+    @Override
+    public int compareTo(Bear another) {
+        return nom.compareTo(another.getNom());
     }
 }

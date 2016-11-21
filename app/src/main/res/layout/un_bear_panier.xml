@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvNomPanier"
+        android:layout_marginLeft="0dp"
+        android:text="tvNomPanier"
+        android:layout_alignTop="@+id/tvPrixPanier"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="tvTaille"
+        android:id="@+id/tvTaillePanier"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="108dp"
+        android:layout_alignTop="@+id/tvPrixPanier"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="tvPrix"
+        android:id="@+id/tvPrixPanier"
+        android:layout_marginLeft="224dp"
+        android:layout_alignBottom="@+id/ckSelection"
+        android:layout_toEndOf="@+id/tvTaillePanier"
+        android:layout_marginStart="53dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ckSelection"
+        android:checked="false"
+        android:layout_marginLeft="315dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

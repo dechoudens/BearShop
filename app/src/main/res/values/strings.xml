@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Bear Shop</string>
     <string name="libTitre">Hello HEG !</string>
+    <string name="libRb1"><![CDATA[<30 F]]></string>
+    <string name="libRb2"><![CDATA[<30-50 F]]></string>
+    <string name="libRb3"><![CDATA[>50 F]]></string>
+    <string name="libRb4">Tous</string>
+    <string name="libBtnFiltrer">Filtrer</string>
+    <string name="libTvPanier">Panier</string>
+    <string name="libSelection">Sélectionnez les ours à acheter</string>
+    <string name="libCommande">Commande actuelle</string>
+    <string name="libNombrePiece">Nombre de pièces</string>
 </resources>

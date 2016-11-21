@@ -16,8 +16,8 @@ import antoine.dechoudens.hesge.ch.bearshop.domaine.Bear;
  */
 public class ListeBears {
     private static final String REF_BEAR = "Ref Serie";
-    private static final String[] FROM = {};
-    private static final int[] TO = {};
+    private static final String[] FROM = {"Image", "Nom", "Taille", "Prix"};
+    private static final int[] TO = {R.id.ivBear, R.id.tvNomPrincipal, R.id.tvTaillePrincipal, R.id.tvPrixPrincipal};
 
     private TreeSet<Bear> bears;
     private List<HashMap<String, Object>> dataAll, dataFiltre;
@@ -33,19 +33,24 @@ public class ListeBears {
         dataAll = new ArrayList<HashMap<String, Object>>(bears.size());
         for (Bear b : bears){
             HashMap<String, Object> map = new HashMap<>();
-            map.put(FROM[0], b.getId());
+            map.put(FROM[0], b.getRefPetiteImage());
+            map.put(FROM[1], b.getNom());
+            map.put(FROM[2], b.getTaille());
+            map.put(FROM[3], b.getPrix());
             map.put(REF_BEAR, b);
             dataAll.add(map);
         }
         dataFiltre = new ArrayList<HashMap<String, Object>>(bears.size());
-        adapter = new SimpleAdapter(context, dataFiltre, R.layout.un_bear, FROM, TO);
+        adapter = new SimpleAdapter(context, dataFiltre, R.layout.un_bear_principal, FROM, TO);
     }
 
     public void doFiltre(Filtre filtre) {
         dataFiltre.clear();
         for (HashMap<String, Object> hm : dataAll){
             Bear b = (Bear)hm.get(REF_BEAR);
-
+            if (filtre.isIn(b)){
+                dataFiltre.add(hm);
+            }
         }
         adapter.notifyDataSetChanged();
     }

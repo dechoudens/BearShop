@@ -49,7 +49,7 @@ public class Data {
         return b.toString();
     } // lireStr
 
-    public TreeSet<Bear> getBears(Resources res){
+    public static TreeSet<Bear> getBears(Resources res){
         TreeSet<Bear> bears = new TreeSet<>();
         String[] lstBear = lireStr(res.openRawResource(R.raw.bears)).split("\r\n");
         for (int i = 0; i < lstBear.length; i++){
