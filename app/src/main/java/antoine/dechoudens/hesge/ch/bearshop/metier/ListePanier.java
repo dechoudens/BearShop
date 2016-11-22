@@ -15,7 +15,6 @@ import antoine.dechoudens.hesge.ch.bearshop.domaine.Bear;
  * Created by Meckanik on 21.11.2016.
  */
 public class ListePanier {
-    private static final String REF_BEAR = "Ref Bear";
     private static final String[] FROM = {"Nom", "Taille", "Prix"};
     private static final int[] TO = {R.id.tvNomPanier, R.id.tvTaillePanier, R.id.tvPrixPanier};
 

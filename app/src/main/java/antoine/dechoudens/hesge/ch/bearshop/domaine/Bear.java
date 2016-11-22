@@ -12,6 +12,7 @@ public class Bear implements Comparable<Bear>, Serializable{
     private double prix;
     private int refPetiteImage;
     private int refGrandImage;
+    private boolean checked;
 
     public Bear(int id, String nom, int taille, double prix, int refPetiteImage, int refGrandImage) {
         this.id = id;
@@ -20,6 +21,7 @@ public class Bear implements Comparable<Bear>, Serializable{
         this.prix = prix;
         this.refGrandImage = refGrandImage;
         this.refPetiteImage = refPetiteImage;
+        this.checked = false;
     }
 
     public String getNom() {
@@ -42,8 +44,23 @@ public class Bear implements Comparable<Bear>, Serializable{
         return refGrandImage;
     }
 
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public boolean isChecked() {
+
+        return checked;
+    }
+
     @Override
     public int compareTo(Bear another) {
         return nom.compareTo(another.getNom());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Bear bear = (Bear) o;
+        return nom != null ? nom.equals(bear.nom) : bear.nom == null;
     }
 }

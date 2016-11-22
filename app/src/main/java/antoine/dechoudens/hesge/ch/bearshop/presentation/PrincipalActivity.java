@@ -7,15 +7,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import antoine.dechoudens.hesge.ch.bearshop.R;
 import antoine.dechoudens.hesge.ch.bearshop.base.Data;
@@ -38,8 +42,12 @@ public class PrincipalActivity extends AppCompatActivity {
     private Button btnFiltrer;
     private ListView lvBears;
     private ListeBears listeBears;
+    private EditText edPanier;
     private List<HashMap<String, Object>> selection;
     private ListeBears.Filtre filtrePrix;
+
+    private static final String ID_ROT_ACTUEL = "idRotActuel";
+    private static final String POS_FIRST_VISIBLE = "posFirstVisible";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,7 @@ public class PrincipalActivity extends AppCompatActivity {
         rb2 = (RadioButton) findViewById(R.id.rb2); rb2.setTag(F2);
         rb3 = (RadioButton) findViewById(R.id.rb3); rb3.setTag(F3);
         rb4 = (RadioButton) findViewById(R.id.rb4); rb4.setTag(F4);
+        edPanier = (EditText) findViewById(R.id.edPanier);
     }
 
     private void initialise() {
@@ -118,16 +127,21 @@ public class PrincipalActivity extends AppCompatActivity {
         lvBears.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                @SuppressWarnings("unchecked")
+                HashMap<String, Object> HMbear = (HashMap<String, Object>) parent.getItemAtPosition(position);
                 CheckBox cb = (CheckBox) view.findViewById(R.id.ckSelectionPrincipal);
-                HashMap<String, Object> bear = listeBears.getOneBear(position);
-                if(cb.isChecked()) {
-                    cb.setChecked(false);
-                    selection.remove(bear);
+                cb.setChecked(!cb.isChecked());
+                HMbear.put("checkbox", cb.isChecked());
+                Bear bear = (Bear)HMbear.get("Ref Bear");
+                if(bear.isChecked()) {
+                    selection.remove(HMbear);
                 }
                 else{
-                    cb.setChecked(true);
-                    selection.add(bear);
+                    selection.add(HMbear);
                 }
+
+                majInfo();
+
             }
         });
 
@@ -141,18 +155,54 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
+    private void majInfo() {
+        edPanier.setText(String.valueOf(selection.size()));
+        ((SimpleAdapter)lvBears.getAdapter()).notifyDataSetChanged();
+    }
+
     public void filtrer(View v){
         listeBears.doFiltre(filtrePrix);
         btnFiltrer.setEnabled(false);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                //je sais pas
-            }
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (resultCode == RESULT_OK) {
+            selection = (List) intent.getSerializableExtra("liste");
+            majAdapter();
+        }
+    }
+
+    public void majAdapter(){
+        for (int i = 0; i< listeBears.getSize();i++) {
+            System.out.println("");
+            View vi = (View) lvBears.getAdapter().getView(i, null, lvBears);
+
+            CheckBox cb = (CheckBox) vi.findViewById(R.id.ckSelectionPrincipal);
+            System.out.println(cb.toString());
+            System.out.println(listeBears.getOneBear(i));
+            cb.setChecked(selection.contains(listeBears.getOneBear(i)));
+            HashMap<String, Object> hm = (HashMap<String, Object>)lvBears.getItemAtPosition(i);
+            hm.put("checkbox", cb.isChecked());
+        }
+        majInfo();
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ID_ROT_ACTUEL, rgFiltrePrix.indexOfChild(findViewById(rgFiltrePrix.getCheckedRadioButtonId())));
+        outState.putInt(POS_FIRST_VISIBLE, lvBears.getFirstVisiblePosition());
+        outState.putSerializable("selec",(Serializable)selection);
+    } // onSaveInstanceState
+
+    @Override
+    protected void onRestoreInstanceState (Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (rgFiltrePrix.indexOfChild(findViewById(rgFiltrePrix.getCheckedRadioButtonId())) != -1) {
+            selection = (List) savedInstanceState.getSerializable("selec");
+            majAdapter();
+            lvBears.setSelection(savedInstanceState.getInt(POS_FIRST_VISIBLE));
         }
     }
 

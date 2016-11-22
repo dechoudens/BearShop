@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import antoine.dechoudens.hesge.ch.bearshop.R;
+import antoine.dechoudens.hesge.ch.bearshop.domaine.Bear;
 import antoine.dechoudens.hesge.ch.bearshop.metier.ListePanier;
 
 /**
@@ -33,7 +34,7 @@ public class PanierActivity extends AppCompatActivity {
     private ImageButton imbDelete;
     private ListView lvBearPanier;
     private ListePanier listePanier;
-    private List<HashMap<String, Object>> selection;
+    private List<HashMap<String, Object>> selection, deleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class PanierActivity extends AppCompatActivity {
         lvBearPanier.setAdapter(listePanier.getAdapter());
         selection = new ArrayList<>();
         afficherStat();
+        deleted = new ArrayList<>();
     }
 
     private void initListener() {
@@ -79,8 +81,10 @@ public class PanierActivity extends AppCompatActivity {
         imbDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (HashMap<String, Object> bear : selection){
-                    listePanier.deleteOneBear(bear);
+                for (HashMap<String, Object> HMbear : selection){
+                    deleted.add(HMbear);
+                    System.out.println((Bear)HMbear.get("Ref Bear"));
+                    listePanier.deleteOneBear(HMbear);
                 }
                 for(int i=0; i < lvBearPanier.getChildCount(); i++){
                     RelativeLayout itemLayout = (RelativeLayout)lvBearPanier.getChildAt(i);
@@ -101,7 +105,10 @@ public class PanierActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        intent.putExtra("MyData", (Serializable)selection);
-        setResult(1, intent);
+        System.out.println(deleted.size() + "lol");
+        intent.putExtra("deleted", (Serializable)deleted);
+        setResult(RESULT_OK, intent);
+        finish();
+        //deleted.clear();
     }
 } // PanierActivity
