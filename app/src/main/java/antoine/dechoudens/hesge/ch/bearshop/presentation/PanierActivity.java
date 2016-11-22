@@ -8,8 +8,10 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,12 +36,17 @@ public class PanierActivity extends AppCompatActivity {
     private ImageButton imbDelete;
     private ListView lvBearPanier;
     private ListePanier listePanier;
-    private List<HashMap<String, Object>> selection, deleted;
+    private List<Bear> selection;
+    private TextView tvDetailNomPanier;
+    private TextView tvDetailPrixPanier;
+    private TextView tvDetailTaillePanier;
+    private ImageView imBearGrandPanier;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_panier_port);
+        setContentView(R.layout.activity_panier);
         initComponent();
         initialise();
         initListener();
@@ -50,6 +57,10 @@ public class PanierActivity extends AppCompatActivity {
         edSomme = (EditText)findViewById(R.id.edSomme);
         imbDelete = (ImageButton)findViewById(R.id.imbDelete);
         lvBearPanier = (ListView)findViewById(R.id.lvBearPanier);
+        tvDetailNomPanier = (TextView)findViewById(R.id.tvDetailNomPanier);
+        tvDetailPrixPanier = (TextView)findViewById(R.id.tvDetailPrixPanier);
+        tvDetailTaillePanier = (TextView)findViewById(R.id.tvDetailTaillePanier);
+        imBearGrandPanier = (ImageView) findViewById(R.id.imBearGrandPanier);
     }
 
     private void initialise() {
@@ -58,7 +69,6 @@ public class PanierActivity extends AppCompatActivity {
         lvBearPanier.setAdapter(listePanier.getAdapter());
         selection = new ArrayList<>();
         afficherStat();
-        deleted = new ArrayList<>();
     }
 
     private void initListener() {
@@ -66,7 +76,8 @@ public class PanierActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckBox cb = (CheckBox) view.findViewById(R.id.ckSelectionPanier);
-                HashMap<String, Object> bear = listePanier.getOneBear(position);
+                HashMap<String, Object> HMbear = listePanier.getOneBear(position);
+                Bear bear = (Bear)HMbear.get(listePanier.REF_BEAR);
                 if(cb.isChecked()) {
                     cb.setChecked(false);
                     selection.remove(bear);
@@ -81,10 +92,8 @@ public class PanierActivity extends AppCompatActivity {
         imbDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (HashMap<String, Object> HMbear : selection){
-                    deleted.add(HMbear);
-                    System.out.println((Bear)HMbear.get("Ref Bear"));
-                    listePanier.deleteOneBear(HMbear);
+                for (Bear bear : selection){
+                    listePanier.deleteOneBear(bear);
                 }
                 for(int i=0; i < lvBearPanier.getChildCount(); i++){
                     RelativeLayout itemLayout = (RelativeLayout)lvBearPanier.getChildAt(i);
@@ -93,6 +102,18 @@ public class PanierActivity extends AppCompatActivity {
                 }
 
                 afficherStat();
+            }
+        });
+
+        lvBearPanier.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                Bear bear = listePanier.getBear(pos);
+                imBearGrandPanier.setImageResource(bear.getRefGrandImage());
+                tvDetailNomPanier.setText(bear.getNom().toString());
+                tvDetailPrixPanier.setText(String.valueOf(bear.getTaille() + " " + getString(R.string.libTaille)));
+                tvDetailTaillePanier.setText(String.valueOf(bear.getPrix() + " " + getString(R.string.libPrix)));
+                return true;
             }
         });
     }
@@ -105,8 +126,7 @@ public class PanierActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        System.out.println(deleted.size() + "lol");
-        intent.putExtra("deleted", (Serializable)deleted);
+        intent.putExtra("Retour", (Serializable)listePanier.getListePanier());
         setResult(RESULT_OK, intent);
         finish();
         //deleted.clear();

@@ -48,6 +48,10 @@ public class Bear implements Comparable<Bear>, Serializable{
         this.checked = checked;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public boolean isChecked() {
 
         return checked;

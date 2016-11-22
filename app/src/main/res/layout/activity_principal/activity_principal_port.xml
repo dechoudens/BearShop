@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".presentation.PrincipalActivity"
+    android:weightSum="1">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/rgFiltrePrix">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/libRb1"
+            android:id="@+id/rb1"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/libRb2"
+            android:id="@+id/rb2"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/libRb3"
+            android:id="@+id/rb3"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/libRb4"
+            android:id="@+id/rb4"
+            android:checked="true" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="74dp"
+            android:layout_height="wrap_content"
+            android:text="@string/libBtnFiltrer"
+            android:id="@+id/btnFiltrer"
+            android:onClick="filtrer" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/libTvPanier"
+            android:id="@+id/tvPanier"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp" />
+
+        <EditText
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:ems="10"
+            android:id="@+id/edPanier"
+            android:focusable="false"
+            android:clickable="false"
+            android:editable="false" />
+
+        <ImageButton
+            android:layout_width="76dp"
+            android:layout_height="match_parent"
+            android:id="@+id/imbPanier"
+            android:src="@drawable/cart"
+            android:scaleType="fitXY" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/libSelection"
+        android:id="@+id/tvSelection" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/HegAppTheme"
+        android:id="@+id/lvBearPrincipal" />
+
+</LinearLayout>

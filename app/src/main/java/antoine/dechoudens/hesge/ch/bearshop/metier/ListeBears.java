@@ -16,7 +16,7 @@ import antoine.dechoudens.hesge.ch.bearshop.domaine.Bear;
  * Created by antoine.dechoude on 16.11.2016.
  */
 public class ListeBears implements Serializable{
-    private static final String REF_BEAR = "Ref Bear";
+    public static final String REF_BEAR = "Ref bear";
     private static final String[] FROM = {"Image", "Nom", "Taille", "Prix"};
     private static final int[] TO = {R.id.ivBear, R.id.tvNomPrincipal, R.id.tvTaillePrincipal, R.id.tvPrixPrincipal};
 
@@ -45,7 +45,7 @@ public class ListeBears implements Serializable{
             dataAll.add(map);
         }
         dataFiltre = new ArrayList<HashMap<String, Object>>(bears.size());
-        adapter = new SimpleAdapter(context, dataFiltre, R.layout.un_bear_principal, FROM, TO);
+        adapter = new SimpleAdapter(context, dataFiltre, R.layout.un_bear_main, FROM, TO);
     }
 
     public void doFiltre(Filtre filtre) {
@@ -61,6 +61,11 @@ public class ListeBears implements Serializable{
 
     public HashMap<String, Object> getOneBear(int id){
         return dataFiltre.get(id);
+    }
+
+    public Bear getBear(int i){
+        List<Bear> list = new ArrayList<Bear> (bears);
+        return list.get(i);
     }
 
     public SimpleAdapter getAdapter () {

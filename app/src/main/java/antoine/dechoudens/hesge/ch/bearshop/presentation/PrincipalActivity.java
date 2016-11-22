@@ -4,22 +4,27 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import antoine.dechoudens.hesge.ch.bearshop.R;
 import antoine.dechoudens.hesge.ch.bearshop.base.Data;
@@ -43,16 +48,21 @@ public class PrincipalActivity extends AppCompatActivity {
     private ListView lvBears;
     private ListeBears listeBears;
     private EditText edPanier;
-    private List<HashMap<String, Object>> selection;
+    private TextView tvDetailNom;
+    private TextView tvDetailPrix;
+    private TextView tvDetailTaille;
+    private ImageView imBearGrand;
+    private List<Bear> selection;
     private ListeBears.Filtre filtrePrix;
 
-    private static final String ID_ROT_ACTUEL = "idRotActuel";
+    private static final String TAB_BEAR = "tabBear";
+    private static final String ID_RB_ACTUEL = "idRbActuel";
     private static final String POS_FIRST_VISIBLE = "posFirstVisible";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_principal_port);
+        setContentView(R.layout.activity_main);
         initComponent();
         initialise();
         initListener();
@@ -68,6 +78,10 @@ public class PrincipalActivity extends AppCompatActivity {
         rb3 = (RadioButton) findViewById(R.id.rb3); rb3.setTag(F3);
         rb4 = (RadioButton) findViewById(R.id.rb4); rb4.setTag(F4);
         edPanier = (EditText) findViewById(R.id.edPanier);
+        tvDetailNom = (TextView)findViewById(R.id.tvDetailNom);
+        tvDetailPrix = (TextView)findViewById(R.id.tvDetailPrix);
+        tvDetailTaille = (TextView)findViewById(R.id.tvDetailTaille);
+        imBearGrand = (ImageView) findViewById(R.id.imBearGrand);
     }
 
     private void initialise() {
@@ -85,22 +99,12 @@ public class PrincipalActivity extends AppCompatActivity {
                 double prix = bear.getPrix();
                 switch (tag){
                     case 1:
-                        if (prix < 30){
-                            return true;
-                        }
-                        break;
+                        if (prix < 30){return true;}break;
                     case 2:
-                        if (prix >= 30 && prix <= 50){
-                            return true;
-                        }
-                        break;
+                        if (prix >= 30 && prix <= 50){return true;}break;
                     case 3:
-                        if (prix > 50){
-                            return true;
-                        }
-                        break;
-                    default:
-                        return true;
+                        if (prix > 50){return true;}break;
+                    default: return true;
                 }
                 return false;
             }
@@ -130,18 +134,15 @@ public class PrincipalActivity extends AppCompatActivity {
                 @SuppressWarnings("unchecked")
                 HashMap<String, Object> HMbear = (HashMap<String, Object>) parent.getItemAtPosition(position);
                 CheckBox cb = (CheckBox) view.findViewById(R.id.ckSelectionPrincipal);
-                cb.setChecked(!cb.isChecked());
-                HMbear.put("checkbox", cb.isChecked());
-                Bear bear = (Bear)HMbear.get("Ref Bear");
-                if(bear.isChecked()) {
-                    selection.remove(HMbear);
+                HMbear.put("checkbox", !cb.isChecked());
+                Bear bear = (Bear)HMbear.get(listeBears.REF_BEAR);
+                if((boolean)HMbear.get("checkbox")) {
+                    selection.add(bear);
                 }
                 else{
-                    selection.add(HMbear);
+                    selection.remove(bear);
                 }
-
                 majInfo();
-
             }
         });
 
@@ -153,11 +154,18 @@ public class PrincipalActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
-    }
 
-    private void majInfo() {
-        edPanier.setText(String.valueOf(selection.size()));
-        ((SimpleAdapter)lvBears.getAdapter()).notifyDataSetChanged();
+        lvBears.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                Bear bear = listeBears.getBear(pos);
+                imBearGrand.setImageResource(bear.getRefGrandImage());
+                tvDetailNom.setText(bear.getNom().toString());
+                tvDetailTaille.setText(String.valueOf(bear.getTaille() + " " + getString(R.string.libTaille)));
+                tvDetailPrix.setText(String.valueOf(bear.getPrix() + " " + getString(R.string.libPrix)));
+                return true;
+            }
+        });
     }
 
     public void filtrer(View v){
@@ -168,42 +176,59 @@ public class PrincipalActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (resultCode == RESULT_OK) {
-            selection = (List) intent.getSerializableExtra("liste");
+            selection = (List) intent.getSerializableExtra("Retour");
             majAdapter();
         }
     }
 
     public void majAdapter(){
-        for (int i = 0; i< listeBears.getSize();i++) {
-            System.out.println("");
-            View vi = (View) lvBears.getAdapter().getView(i, null, lvBears);
-
-            CheckBox cb = (CheckBox) vi.findViewById(R.id.ckSelectionPrincipal);
-            System.out.println(cb.toString());
-            System.out.println(listeBears.getOneBear(i));
-            cb.setChecked(selection.contains(listeBears.getOneBear(i)));
+        for (int i = 0; i< lvBears.getChildCount();i++) {
+            View view = (View) lvBears.getAdapter().getView(i, null, lvBears);
+            CheckBox cb = (CheckBox) view.findViewById(R.id.ckSelectionPrincipal);
+            boolean ischecked = selection.contains(listeBears.getBear(i));
             HashMap<String, Object> hm = (HashMap<String, Object>)lvBears.getItemAtPosition(i);
-            hm.put("checkbox", cb.isChecked());
+            hm.put("checkbox", ischecked);
         }
         majInfo();
     }
 
+    private void majInfo() {
+        edPanier.setText(String.valueOf(selection.size()));
+        for (int i = 0; i < lvBears.getChildCount(); i++){
+            HashMap<String,Object> bear = listeBears.getOneBear(i);
+            View v = lvBears.getChildAt(i);
+            CheckBox cb = (CheckBox) v.findViewById(R.id.ckSelectionPrincipal);
+            boolean checked = ((boolean)bear.get("checkbox"));
+            cb.setChecked(checked);
+        }
+        ((SimpleAdapter)lvBears.getAdapter()).notifyDataSetChanged();
+    }
+
+
     @Override
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(ID_ROT_ACTUEL, rgFiltrePrix.indexOfChild(findViewById(rgFiltrePrix.getCheckedRadioButtonId())));
+        outState.putInt(ID_RB_ACTUEL, currentFiltre);
         outState.putInt(POS_FIRST_VISIBLE, lvBears.getFirstVisiblePosition());
-        outState.putSerializable("selec",(Serializable)selection);
-    } // onSaveInstanceState
+        int[] tabInt = new int[lvBears.getChildCount()];
+        for(int i = 0; i < lvBears.getChildCount(); i++){
+            HashMap<String, Object> hm = (HashMap<String, Object>)lvBears.getItemAtPosition(i);
+            int id = ((Bear)hm.get(listeBears.REF_BEAR)).getId();
+            tabInt[i] = id;
+        }
+        outState.putIntArray(TAB_BEAR, tabInt);
+    }
 
     @Override
     protected void onRestoreInstanceState (Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (rgFiltrePrix.indexOfChild(findViewById(rgFiltrePrix.getCheckedRadioButtonId())) != -1) {
-            selection = (List) savedInstanceState.getSerializable("selec");
+        currentFiltre = savedInstanceState.getInt(ID_RB_ACTUEL);
+        if (currentFiltre != 0) {
             majAdapter();
             lvBears.setSelection(savedInstanceState.getInt(POS_FIRST_VISIBLE));
         }
     }
+
+
 
 } // PrincipalActivity

@@ -13,4 +13,6 @@
     <string name="libNbPiece">Nombe de pièces</string>
     <string name="libSomme">Somme</string>
     <string name="libContenu">Contenu du panier</string>
+    <string name="libTaille">[cm]</string>
+    <string name="libPrix">CHF</string>
 </resources>
