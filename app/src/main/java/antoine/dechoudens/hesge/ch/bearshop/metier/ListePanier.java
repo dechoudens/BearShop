@@ -35,8 +35,8 @@ public class ListePanier implements Serializable{
         for (Bear b : bears){
             HashMap<String, Object> map = new HashMap<>();
             map.put(FROM[0], b.getNom());
-            map.put(FROM[1], b.getTaille());
-            map.put(FROM[2], b.getPrix());
+            map.put(FROM[1], b.getTaille() + " " + context.getString(R.string.libTaille));
+            map.put(FROM[2], b.getPrix() + " " + context.getString(R.string.libPrix));
             map.put("checkbox", false);
             map.put(REF_BEAR, b);
             dataAll.add(map);
@@ -72,7 +72,8 @@ public class ListePanier implements Serializable{
     public double getPrixTot(){
         double prixTot = 0.0;
         for (HashMap<String, Object> hm: dataAll) {
-            prixTot += Double.parseDouble(hm.get("Prix").toString());
+            Bear b = (Bear)hm.get(REF_BEAR);
+            prixTot += b.getPrix();
         }
         return prixTot;
     }

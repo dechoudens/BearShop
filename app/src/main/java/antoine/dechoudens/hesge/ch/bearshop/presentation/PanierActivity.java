@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ public class PanierActivity extends AppCompatActivity {
     private TextView tvDetailPrixPanier;
     private TextView tvDetailTaillePanier;
     private ImageView imBearGrandPanier;
+    private DecimalFormat format;
 
 
     @Override
@@ -68,6 +70,7 @@ public class PanierActivity extends AppCompatActivity {
         listePanier = new ListePanier(getApplicationContext(), (List)intent.getSerializableExtra("selection"));
         lvBearPanier.setAdapter(listePanier.getAdapter());
         selection = new ArrayList<>();
+        format = new DecimalFormat("####.##");
         afficherStat();
     }
 
@@ -119,7 +122,7 @@ public class PanierActivity extends AppCompatActivity {
     }
 
     private void afficherStat() {
-        edSomme.setText(""+listePanier.getPrixTot());
+        edSomme.setText(format.format(listePanier.getPrixTot()) + " " + getString(R.string.libPrix));
         edNbPiece.setText(""+listePanier.getNbPiece());
     }
 
@@ -129,6 +132,5 @@ public class PanierActivity extends AppCompatActivity {
         intent.putExtra("Retour", (Serializable)listePanier.getListePanier());
         setResult(RESULT_OK, intent);
         finish();
-        //deleted.clear();
     }
 } // PanierActivity

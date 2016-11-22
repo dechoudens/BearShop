@@ -38,8 +38,8 @@ public class ListeBears implements Serializable{
             HashMap<String, Object> map = new HashMap<>();
             map.put(FROM[0], b.getRefPetiteImage());
             map.put(FROM[1], b.getNom());
-            map.put(FROM[2], b.getTaille());
-            map.put(FROM[3], b.getPrix());
+            map.put(FROM[2], b.getTaille() + " " + context.getString(R.string.libTaille));
+            map.put(FROM[3], b.getPrix() + " " + context.getString(R.string.libPrix));
             map.put("checkbox", false);
             map.put(REF_BEAR, b);
             dataAll.add(map);
