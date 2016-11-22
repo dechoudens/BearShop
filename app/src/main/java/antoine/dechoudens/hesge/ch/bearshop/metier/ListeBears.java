@@ -3,6 +3,7 @@ package antoine.dechoudens.hesge.ch.bearshop.metier;
 import android.content.Context;
 import android.widget.SimpleAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import antoine.dechoudens.hesge.ch.bearshop.domaine.Bear;
 /**
  * Created by antoine.dechoude on 16.11.2016.
  */
-public class ListeBears {
+public class ListeBears implements Serializable{
     private static final String REF_BEAR = "Ref Serie";
     private static final String[] FROM = {"Image", "Nom", "Taille", "Prix"};
     private static final int[] TO = {R.id.ivBear, R.id.tvNomPrincipal, R.id.tvTaillePrincipal, R.id.tvPrixPrincipal};
@@ -53,6 +54,10 @@ public class ListeBears {
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    public HashMap<String, Object> getOneBear(int id){
+        return dataFiltre.get(id);
     }
 
     public SimpleAdapter getAdapter () {

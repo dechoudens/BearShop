@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".presentation.PanierActivity"
-            android:theme="@style/HegAppTheme"></activity>
+            android:theme="@style/HegAppTheme" />
     </application>
 
 </manifest>

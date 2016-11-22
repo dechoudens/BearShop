@@ -1,9 +1,11 @@
 package antoine.dechoudens.hesge.ch.bearshop.domaine;
 
+import java.io.Serializable;
+
 /**
  * Created by antoine.dechoude on 16.11.2016.
  */
-public class Bear implements Comparable<Bear>{
+public class Bear implements Comparable<Bear>, Serializable{
     private int id;
     private String nom;
     private int taille;

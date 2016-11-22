@@ -10,4 +10,7 @@
     <string name="libSelection">Sélectionnez les ours à acheter</string>
     <string name="libCommande">Commande actuelle</string>
     <string name="libNombrePiece">Nombre de pièces</string>
+    <string name="libNbPiece">Nombe de pièces</string>
+    <string name="libSomme">Somme</string>
+    <string name="libContenu">Contenu du panier</string>
 </resources>
